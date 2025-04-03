@@ -1,0 +1,56 @@
+# =============== #
+# Unity generated #
+# =============== #
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# MemoryCaptures can get excessive in size.
+# They also could contain extremely sensitive data
+[Mm]emoryCaptures/
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+[Ee]xported[Oo]bj/
+.vs/
+*.userprefs
+/*.csproj
+/*.pidb
+/*.suo
+/*.sln*
+/*.user
+/*.unityproj
+/*.booproj
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ============= #
+# Project files #
+# ============= #
+# 只保留需要的文件夹
+/*
+!/.gitignore
+!/Assets/
+!/Packages/
+!/ProjectSettings/
+
+# 但忽略Assets中的某些文件
+Assets/AssetStoreTools*
+Assets/Plugins/Editor/JetBrains*
+
+# 保留必要的Packages文件
+!Packages/manifest.json
+!Packages/packages-lock.json
