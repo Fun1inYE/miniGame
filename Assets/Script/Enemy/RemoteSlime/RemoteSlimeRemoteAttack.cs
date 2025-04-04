@@ -45,11 +45,7 @@ public class RemoteSlimeRemoteAttack : EnemyRemoteAttack
                 //开始攻击
                 gameObject.GetComponent<RemoteSlimeAnimation>().isAttack = true;
             }
-            else
-            {
-                gameObject.GetComponent<RemoteSlimeMove>().canMove = true;
-                yield return null;
-            }
+
             yield return new WaitForSeconds(frequency);
         }
     }
