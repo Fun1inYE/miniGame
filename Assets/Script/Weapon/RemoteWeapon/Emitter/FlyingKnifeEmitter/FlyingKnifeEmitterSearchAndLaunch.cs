@@ -5,6 +5,6 @@ using UnityEngine;
 /// <summary>
 /// 飞刀的寻找目标并且发射子弹的逻辑
 /// </summary>
-public class FlyingKnifeEmitterSearchAndLaunch : SearchAndLaunch
+public class FlyingKnifeEmitterSearchAndLaunch : EmitterSearchAndLaunch
 {
 }

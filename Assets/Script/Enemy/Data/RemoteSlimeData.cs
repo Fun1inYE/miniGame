@@ -28,23 +28,30 @@ public class RemoteSlimeData : EnemyData
     /// </summary>
     private float effectiveRange;
 
+    /// <summary>
+    /// 子弹是否可以追踪
+    /// </summary>
+    private bool canTrack = false;
+
     public float BulletSpeed { get => bulletSpeed; set => bulletSpeed = value; }
     public float FireFrequency { get => fireFrequency; set => fireFrequency = value; }
     public int BulletAttack { get => bulletAttack; set => bulletAttack = value; }
     public float EffectiveRange { get => effectiveRange; set => effectiveRange = value; }
     public float FireRange { get => fireRange; set => fireRange = value; }
+    public bool CanTrack { get => canTrack; set => canTrack = value; }
 
-    public RemoteSlimeData(string name, float speed, int health, int attack, int level, float bulletSpeed, float fireFrequency, int bulletAttack, float fireRange, float effectiveRange) : base(name, speed, health, attack, level)
+    public RemoteSlimeData(string name, float speed, int health, int attack, int level, float bulletSpeed, float fireFrequency, int bulletAttack, float fireRange, float effectiveRange, bool canTrack = false) : base(name, speed, health, attack, level)
     {
         this.bulletSpeed = bulletSpeed;
         this.fireFrequency = fireFrequency;
         this.bulletAttack = bulletAttack;
         this.fireRange = fireRange;
         this.effectiveRange = effectiveRange;
+        this.canTrack = canTrack;
     }
 
     public RemoteSlimeData()
     {
-
+        
     }
 }

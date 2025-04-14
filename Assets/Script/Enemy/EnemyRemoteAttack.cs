@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 
 /// <summary>
@@ -51,7 +50,7 @@ public class EnemyRemoteAttack : MonoBehaviour
 
     protected virtual void Update()
     {
-        
+
     }
 
     /// <summary>

@@ -15,12 +15,12 @@ public class MessageManager : Singleton<MessageManager>
     /// <summary>
     /// 脚本初始化
     /// </summary>
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         //给字典初始化
         actionDic = new Dictionary<string, IMessageData>();
         //单例初始化
-        base.InitSingleton();
         DontDestroyOnLoad(gameObject);
     }
 

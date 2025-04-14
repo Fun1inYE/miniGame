@@ -10,7 +10,7 @@ public class FlyingKnifeAttack : WeaponAttack
         //识别敌人
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            EnemyHealth enemyHealth = other.gameObject.GetComponent<SlimeHealth>();
+            EnemyHealth enemyHealth = other.gameObject.GetComponent<EnemyHealth>();
             enemyHealth.Attacked(attack);
             EnemyMove enemyMove = other.gameObject.GetComponent<EnemyMove>();
             enemyMove.Back(back);

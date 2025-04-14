@@ -34,6 +34,13 @@ public class GamingPanel : BasePanel
     {
         base.OnPasue();
         //这里实现游戏暂停相关逻辑
+        gamingPanelUI.BuildMenuButtonPanel.SetActive(false);
+    }
+
+    public override void OnResume()
+    {
+        base.OnResume();
+        gamingPanelUI.BuildMenuButtonPanel.SetActive(true);
     }
 
     /// <summary>

@@ -54,7 +54,6 @@ public class PoolManager : MonoBehaviour
     /// <param name="gameObj">要池化的对象</param>
     /// <param name="poolSize">创建池子的大小</param>
     /// <param name="transformToPoolName">要移动到的位置的名字</param>
-    /// TODO: 需要根据需求重新写
     public void CreatGameObjectPool(GameObject gameObj, int poolSize, string transformToPoolName, string poolName = "defaultName")
     {
         string poolKey;

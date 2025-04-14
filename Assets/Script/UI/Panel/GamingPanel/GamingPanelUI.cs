@@ -21,9 +21,21 @@ public class GamingPanelUI : MonoBehaviour
     private Button pasueButton;
 
     /// <summary>
+    /// 建造菜单的按钮
+    /// </summary>
+    private Button buildMenuButton;
+
+    /// <summary>
+    /// 建造菜单按钮的面板
+    /// </summary>
+    private GameObject buildMenuButtonPanel;
+
+    /// <summary>
     /// UI负责更新的数据
     /// </summary>
     private GamingPanelData data;
+
+    public GameObject BuildMenuButtonPanel { get => buildMenuButtonPanel; set => buildMenuButtonPanel = value; }
 
     private void Awake()
     {
@@ -45,6 +57,15 @@ public class GamingPanelUI : MonoBehaviour
             //压入暂停UI
             UIManager.Instance.GetPanelManager().Push(new PausePanel());
         });
+
+        buildMenuButton = ComponentFinder.GetChildComponent<Button>(gameObject, "BuildTowerButton");
+        buildMenuButton.onClick.AddListener(() => 
+        {
+            //压入暂停UI
+            UIManager.Instance.GetPanelManager().Push(new BuildMenuPanel());
+        });
+
+        buildMenuButtonPanel = FindAndMoveObject.FindChildRecursive(transform, "BuildButtonPanel").gameObject;
     }
 
     /// <summary>

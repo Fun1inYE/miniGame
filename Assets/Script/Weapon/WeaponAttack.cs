@@ -22,7 +22,7 @@ public class WeaponAttack : MonoBehaviour
     protected virtual void OnTriggerEnter2D(Collider2D other) 
     {
         //识别敌人
-        if(other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        if(other.CompareTag("Enemy"))
         {
             EnemyHealth enemyHealth = other.gameObject.GetComponent<EnemyHealth>();
             enemyHealth.Attacked(attack);

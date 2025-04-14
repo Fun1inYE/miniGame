@@ -213,7 +213,8 @@ public class EnemyGenerateManager : MonoBehaviour
                         GameObject initObj = EnemyFactory.CreateEnemyWithType(GetEnemyTypeWithRange(randomNum));
                         //敌人数量 +1
                         currentEnemyCount ++;
-                        Instantiate(initObj, point, Quaternion.identity);
+                        //向敌人管理器中添加一个敌人并且生成
+                        EnemyManager.Instance.RegisterEnemy(Instantiate(initObj, point, Quaternion.identity));
                         Debug.Log("点合法的");
                     }
                 }

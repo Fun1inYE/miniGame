@@ -15,10 +15,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     /// </summary>
     public static T Instance {get => instance;}
 
-    /// <summary>
-    /// 初始化单例模式
-    /// </summary>
-    protected virtual void InitSingleton()
+    protected virtual void Awake()
     {
         if(instance != null)
         {
@@ -27,6 +24,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
         else
         {
             instance = (T)this;
+            Debug.Log($"单例{instance.gameObject.name}初始化成功");
         }
     }
 

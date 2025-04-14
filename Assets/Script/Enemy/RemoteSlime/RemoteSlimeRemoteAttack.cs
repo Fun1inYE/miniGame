@@ -42,8 +42,18 @@ public class RemoteSlimeRemoteAttack : EnemyRemoteAttack
             //如果寻找到玩家的话
             if(FindTarget() && canAttack)
             {
+                //停止运动
+                gameObject.GetComponent<RemoteSlimeMove>().canMove = false;
                 //开始攻击
                 gameObject.GetComponent<RemoteSlimeAnimation>().isAttack = true;
+            }
+            else if(!FindTarget())
+            {
+                //开始运动
+                gameObject.GetComponent<RemoteSlimeMove>().canMove = true;
+                //停止攻击
+                //开始攻击
+                gameObject.GetComponent<RemoteSlimeAnimation>().isAttack = false;
             }
 
             yield return new WaitForSeconds(frequency);
@@ -63,7 +73,7 @@ public class RemoteSlimeRemoteAttack : EnemyRemoteAttack
         }
 
         //生成子弹
-        GameObject bulletObj =  Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        GameObject bulletObj = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         bulletObj.GetComponent<BulletMove>().target = target;
     }
 }

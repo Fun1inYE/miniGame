@@ -88,9 +88,14 @@ public class LevelPanelUI : MonoBehaviour
             Debug.Log(i);
 
             button.onClick.AddListener(() => {
-                //TODO:启动游戏，让GenerateEnemyManager读取到这一关的数据情况
+                //让GenerateEnemyManager读取到这一关的数据情况
                 MessageManager.Instance.Send(MessageDefine.GET_WAVE_INFO, editor.levels[index].waves);
                 MessageManager.Instance.Send(MessageDefine.GAMESTART);
+                //退出所有窗口
+                UIManager.Instance.GetPanelManager().AllPop();
+                UIManager.Instance.GetPanelManager().Push(new GamingPanel());
+                //打开摇杆
+                FindAndMoveObject.FindFromFirstLayer("JoystickCanvas").SetActive(true);
             });
 
             //给列表中添加该按钮

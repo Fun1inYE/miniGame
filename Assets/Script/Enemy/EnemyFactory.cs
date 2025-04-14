@@ -105,8 +105,8 @@ public static class EnemyFactory
         RemoteSlimeHealth remoteSlimeHealth = ComponentFinder.GetOrAddComponent<RemoteSlimeHealth>(go);
         remoteSlimeHealth.health = data.Health;
         RemoteSlimeAnimation remoteSlimeAnimation = ComponentFinder.GetOrAddComponent<RemoteSlimeAnimation>(go);
-        
 
+        //读取远程史莱姆的子弹的预制体
         string bulletPrefabPath = "Prefab/EnemyBullet/RemoteSlimeBullet";
         GameObject bulletGo = Resources.Load<GameObject>(bulletPrefabPath);
 
@@ -114,6 +114,7 @@ public static class EnemyFactory
         RemoteSlimeBulletMove remoteSlimeBullet = ComponentFinder.GetOrAddComponent<RemoteSlimeBulletMove>(bulletGo);
         remoteSlimeBullet.speed = data.BulletSpeed;
         remoteSlimeBullet.effectiveRange = data.EffectiveRange;
+        remoteSlimeBullet.canTrack = data.CanTrack;
         RemoteSlimeBulletAttack remoteSlimeBulletAttack = ComponentFinder.GetOrAddComponent<RemoteSlimeBulletAttack>(bulletGo);
         remoteSlimeBulletAttack.attack = data.BulletAttack;
         //给对应逻辑脚本添加上对应子弹
@@ -121,6 +122,8 @@ public static class EnemyFactory
 
         return go;
     }
+
+    
 
     /// <summary>
     /// 创建一个测试用例
