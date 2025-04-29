@@ -43,7 +43,6 @@ public static class EnemyFactory
         GameObject go = Resources.Load<GameObject>(prefabPath);
         //创建一个SlimeData
         EnemyData data = new SlimeData("Slime", 10f, 10, 2, 10);
-
         //获取Silme相关组件,并且赋予数值
         Slime slime = ComponentFinder.GetOrAddComponent<Slime>(go);
         slime.enemyType = EnemyType.Slime;
@@ -53,6 +52,8 @@ public static class EnemyFactory
         attack.attack = data.Attack;
         SlimeHealth health = ComponentFinder.GetOrAddComponent<SlimeHealth>(go);
         health.health = data.Health;
+
+        YPositionSorting yPositionSorting = ComponentFinder.GetOrAddComponent<YPositionSorting>(go);
 
         return go;
     }
@@ -64,21 +65,23 @@ public static class EnemyFactory
     {
         string prefabPath = "Prefab/Enemy/Tree";
         //同上
-        GameObject gameObject = Resources.Load<GameObject>(prefabPath);
+        GameObject go = Resources.Load<GameObject>(prefabPath);
         //同上
         EnemyData data = new TreeData("Tree", 5f, 5, 5,10);
 
         //获取Tree相关组件并赋予数值
-        Tree tree = ComponentFinder.GetOrAddComponent<Tree>(gameObject);
+        Tree tree = ComponentFinder.GetOrAddComponent<Tree>(go);
         tree.enemyType = EnemyType.Tree;
-        TreeMove move = ComponentFinder.GetOrAddComponent<TreeMove>(gameObject);
+        TreeMove move = ComponentFinder.GetOrAddComponent<TreeMove>(go);
         move.speed = data.Speed;
-        TreeAttack attack = ComponentFinder.GetOrAddComponent<TreeAttack>(gameObject);
+        TreeAttack attack = ComponentFinder.GetOrAddComponent<TreeAttack>(go);
         attack.attack = data.Attack;
-        TreeHealth health = ComponentFinder.GetOrAddComponent<TreeHealth>(gameObject);
+        TreeHealth health = ComponentFinder.GetOrAddComponent<TreeHealth>(go);
         health.health = data.Health;
 
-        return gameObject;
+        YPositionSorting yPositionSorting = ComponentFinder.GetOrAddComponent<YPositionSorting>(go);
+
+        return go;
     }
 
     /// <summary>
@@ -105,6 +108,8 @@ public static class EnemyFactory
         RemoteSlimeHealth remoteSlimeHealth = ComponentFinder.GetOrAddComponent<RemoteSlimeHealth>(go);
         remoteSlimeHealth.health = data.Health;
         RemoteSlimeAnimation remoteSlimeAnimation = ComponentFinder.GetOrAddComponent<RemoteSlimeAnimation>(go);
+        
+        YPositionSorting yPositionSorting_Nou = ComponentFinder.GetOrAddComponent<YPositionSorting>(go);
 
         //读取远程史莱姆的子弹的预制体
         string bulletPrefabPath = "Prefab/EnemyBullet/RemoteSlimeBullet";
@@ -119,6 +124,8 @@ public static class EnemyFactory
         remoteSlimeBulletAttack.attack = data.BulletAttack;
         //给对应逻辑脚本添加上对应子弹
         remoteSlimeRemoteAttack.bulletPrefab = bulletGo;
+
+        YPositionSorting yPositionSorting_Sub = ComponentFinder.GetOrAddComponent<YPositionSorting>(bulletGo);
 
         return go;
     }

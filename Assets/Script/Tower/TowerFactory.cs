@@ -52,6 +52,8 @@ public static class TowerFactory
         magicTowerSearchAndLaunch.range = data.Range;
         magicTowerSearchAndLaunch.frequency = data.Frequency;
 
+        YPositionSorting yPositionSorting_Nou = ComponentFinder.GetOrAddComponent<YPositionSorting>(go);
+
         string bulletPrefabPath = "Prefab/TowerBullet/MagicTowerBullet";
         //首先要获取到没有修饰过的GameObject
         GameObject bulletGo = Resources.Load<GameObject>(bulletPrefabPath);
@@ -67,6 +69,8 @@ public static class TowerFactory
         
         //给魔法塔赋予子弹
         magicTowerSearchAndLaunch.bulletPrefab = bulletGo;
+
+        YPositionSorting yPositionSorting_Sub = ComponentFinder.GetOrAddComponent<YPositionSorting>(bulletGo);
 
         Debug.Log("完成塔的脚本逻辑");
 
