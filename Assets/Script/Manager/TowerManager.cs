@@ -17,6 +17,11 @@ public class TowerManager : Singleton<TowerManager>
         base.Awake();
     }
 
+    private void Start()
+    {
+        MessageManager.Instance.AddFunctionInAction(MessageDefine.BACK_TO_MAINMENU, RemoveAllTower);
+    }
+
     /// <summary>
     /// 添加一个塔的方法
     /// </summary>
@@ -33,5 +38,23 @@ public class TowerManager : Singleton<TowerManager>
     public void UnregisterTower(GameObject tower)
     {
         towerList.Remove(tower);
+    }
+
+    /// <summary>
+    /// 消除所有塔的方法
+    /// </summary>
+    public void RemoveAllTower()
+    {
+        foreach (GameObject tower in towerList)
+        {
+            Destroy(tower);
+        }
+        //清除列表
+        towerList.Clear();
+    }
+
+    private void OnDisable()
+    {
+        MessageManager.Instance.RemoveFunctionInAction(MessageDefine.BACK_TO_MAINMENU, RemoveAllTower);
     }
 }

@@ -43,8 +43,8 @@ public class YPositionSorting : MonoBehaviour
         float bottomY = transform.position.y - spriteRenderer.bounds.extents.y;
         
         // 动态调整Sorting Order，确保Y越高数值越小
-        spriteRenderer.sortingOrder = Mathf.FloorToInt(-bottomY * 1000);
-        
+        spriteRenderer.sortingOrder = Mathf.FloorToInt(-bottomY * 10);
+
         lastYPosition = transform.position.y;
     }
 }

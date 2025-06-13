@@ -69,7 +69,7 @@ public class EmitterSearchAndLaunch : MonoBehaviour
                     bullet.GetComponent<BulletMove>().target = nearestEnemy;
                 }
             }
-            yield return new WaitForSeconds(frequency);
+            yield return new WaitForSeconds(frequency - BuffManager.Instance.buffData.AttackSpeedLevel * PlayerBuffDataMultiplier.multi_AttackSpeed);
         }
     }
 

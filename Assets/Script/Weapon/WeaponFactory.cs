@@ -96,7 +96,7 @@ public static class WeaponFactory
         GameObject emitterPrefab = Resources.Load<GameObject>(emitterPrefabPath);
 
         //创建一个飞刀发射器的数据
-        RemoteWeaponData data = new FlyingKnifeData("flyingKnifeEmitter", "普通的飞刀发射器", 2, 0, AttackType.Remote, WeaponType.FlyingKnife, float.MaxValue, float.MaxValue, 1f, 120f, false);
+        RemoteWeaponData data = new FlyingKnifeData("flyingKnifeEmitter", "普通的飞刀发射器", 2, 0, AttackType.Remote, WeaponType.FlyingKnife, float.MaxValue, float.MaxValue, 2f, 120f, false);
 
         //添加飞刀发射器的搜索和发射的逻辑脚本
         FlyingKnifeEmitterSearchAndLaunch emitterSearchAndLaunch = ComponentFinder.GetOrAddComponent<FlyingKnifeEmitterSearchAndLaunch>(emitterPrefab);
@@ -118,6 +118,9 @@ public static class WeaponFactory
         FlyingKnifeAttack flyingKnifeAttack = ComponentFinder.GetOrAddComponent<FlyingKnifeAttack>(bulletPrefab);
         flyingKnifeAttack.attack = data.Attack;
         flyingKnifeAttack.back = data.Back;
+        
+        //绑定飞刀的逻辑
+        FlyingKnife flyingKnife = ComponentFinder.GetOrAddComponent<FlyingKnife>(bulletPrefab);
 
         FlyingKnifeMove flyingKnifeMove = ComponentFinder.GetOrAddComponent<FlyingKnifeMove>(bulletPrefab);
         flyingKnifeMove.speed = data.Speed;

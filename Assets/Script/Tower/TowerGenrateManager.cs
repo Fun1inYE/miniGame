@@ -180,6 +180,9 @@ public class TowerGenrateManager : MonoBehaviour
         //初始化魔法塔的攻击逻辑
         tower.GetComponent<TowerSearchAndLaunch>().StartSearchAndLaunchCoro();
 
+        //将这个塔加入到塔的管理器当中
+        TowerManager.Instance.RegisterTower(tower);
+
         //然后去除各种缓存
         tower = null;
         buildState = null;

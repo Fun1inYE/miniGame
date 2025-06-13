@@ -18,7 +18,9 @@ public class EnemyHealth : MonoBehaviour
         {
             //向怪物生成器发送怪物死亡消息
             MessageManager.Instance.Send<int>(MessageDefine.ENEMY_COUNTDOWN, 1);
-            EnemyManager.Instance.UnregisterEnemy(gameObject);
+            EnemyManager.Instance.RemoveEnemy(gameObject);
+            //向总结管理器发送击杀信息
+            MessageManager.Instance.Send(MessageDefine.ADD_KILL_ENEMY_COUNT);
             //销毁gameObject
             Destroy(gameObject);
         }

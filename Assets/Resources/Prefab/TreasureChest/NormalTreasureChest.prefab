@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2312692906734045686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9171539078042049589}
+  m_Layer: 0
+  m_Name: RingPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9171539078042049589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2312692906734045686}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6770442829829172688}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6770442829829172691
 GameObject:
   m_ObjectHideFlags: 0
@@ -14,9 +45,11 @@ GameObject:
   - component: {fileID: 1743446276680863605}
   - component: {fileID: 8337166176108848230}
   - component: {fileID: 2288367975040090086}
+  - component: {fileID: -1052862932004450923}
+  - component: {fileID: -7023847748812590593}
   m_Layer: 0
   m_Name: NormalTreasureChest
-  m_TagString: Untagged
+  m_TagString: Chest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,7 +65,8 @@ Transform:
   m_LocalPosition: {x: -25, y: -6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 9171539078042049589}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -74,8 +108,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -237124265
-  m_SortingLayer: 1
+  m_SortingLayerID: -1748160573
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: -1796881537, guid: 367343d617af2c043b4d24226edf95f6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -134,7 +168,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &8337166176108848230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,7 +181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b3b899f8ed1fa54abf3decc7b311bf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sapphire: 0
 --- !u!114 &2288367975040090086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,3 +197,29 @@ MonoBehaviour:
   tran: {fileID: 6770442829829172688}
   spriteRenderer: {fileID: 6770442829829172689}
   openSprite: {fileID: 438276742, guid: 367343d617af2c043b4d24226edf95f6, type: 3}
+  endPos: {x: 0.1, y: -0.5}
+--- !u!114 &-1052862932004450923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6770442829829172691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aed4f2f8df569e41ae522081edae0ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7023847748812590593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6770442829829172691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50c67784b95671d4a97199d927eeb549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sapphire: 500

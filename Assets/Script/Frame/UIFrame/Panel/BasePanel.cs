@@ -38,7 +38,11 @@ public class BasePanel
     /// <summary>
     /// 进入UI要执行的方法
     /// </summary>
-    public virtual void OnEnter() { }
+    public virtual void OnEnter() 
+    {
+        //在窗口每次进入的时候更新经济系统
+        EconomyManager.Instance.UpdateEcoValue();
+    }
 
     /// <summary>
     /// 正在UI界面中要执行的方法

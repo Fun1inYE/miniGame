@@ -30,7 +30,7 @@ public class BuildMenuPanelData
 
     public void NotifySapphire(int value)
     {
-        sapphire += value;
+        sapphire = value;
         OnDataChange?.Invoke();
     }
 }

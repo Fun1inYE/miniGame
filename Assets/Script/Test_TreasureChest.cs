@@ -14,7 +14,7 @@ public class Test_TreasureChest : MonoBehaviour
         player = FindAndMoveObject.FindFromFirstLayer("Player").transform;
 
         createAChest.onClick.AddListener(() => {
-            GameObject chest = TreasureChestFactory.CreateAChest((Vector2)player.position + new Vector2(0, 8f), 500);
+            GameObject chest = TreasureChestFactory.CreateAChest(ChestType.Normal, (Vector2)player.position + new Vector2(0, 8f), 500);
             Instantiate(chest, (Vector2)player.position + new Vector2(50f, 50f), Quaternion.identity);
         });
     }

@@ -102,6 +102,11 @@ public class MessageManager : Singleton<MessageManager>
             if(previousAction is MessageData<T> messageData)
             {
                 messageData.MessageEvent -= action;
+                //检测委托字典中有没有空委托，如果有就删除
+                if(messageData.MessageEvent == null)
+                {
+                    actionDic.Remove(name);
+                }
             }
         }
     }
@@ -121,6 +126,11 @@ public class MessageManager : Singleton<MessageManager>
             if(previousAction is MessageData<T, U> messageData)
             {
                 messageData.MessageEvent -= action;
+                //检测委托字典中有没有空委托，如果有就删除
+                if(messageData.MessageEvent == null)
+                {
+                    actionDic.Remove(name);
+                }
             }
         }
     }

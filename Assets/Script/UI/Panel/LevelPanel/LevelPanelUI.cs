@@ -84,15 +84,14 @@ public class LevelPanelUI : MonoBehaviour
                 // 设置按钮的文本为当前序号 + 1
                 buttonText.text = (i + 1).ToString();
             }
-
-            Debug.Log(i);
-
+            
             button.onClick.AddListener(() => {
                 //让GenerateEnemyManager读取到这一关的数据情况
-                MessageManager.Instance.Send(MessageDefine.GET_WAVE_INFO, editor.levels[index].waves);
-                MessageManager.Instance.Send(MessageDefine.GAMESTART);
+                MessageManager.Instance.Send(MessageDefine.GET_WAVE_INFO, editor.levels[index].waves, editor.levels[index].coin);
+                MessageManager.Instance.Send(MessageDefine.GAME_START);
                 //退出所有窗口
                 UIManager.Instance.GetPanelManager().AllPop();
+                //打开GamingPanel窗口
                 UIManager.Instance.GetPanelManager().Push(new GamingPanel());
                 //打开摇杆
                 FindAndMoveObject.FindFromFirstLayer("JoystickCanvas").SetActive(true);

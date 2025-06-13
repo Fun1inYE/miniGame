@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 1345752697917814084}
   - component: {fileID: 5117328519906412098}
   - component: {fileID: 5255805079125660458}
+  - component: {fileID: 5637255420665297627}
   m_Layer: 0
   m_Name: RemoteSlimeBullet
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,8 +75,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -237124265
-  m_SortingLayer: 1
+  m_SortingLayerID: 842178957
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: -107023515, guid: e307c7fad4d86d24385e04455a2fd2fa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -165,3 +166,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 5
   col: {fileID: 0}
+--- !u!114 &5637255420665297627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345752697917814083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aed4f2f8df569e41ae522081edae0ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

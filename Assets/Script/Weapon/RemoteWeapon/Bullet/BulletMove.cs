@@ -100,7 +100,7 @@ public class BulletMove : MonoBehaviour
     /// <summary>
     /// 检查子弹是否失效的方法
     /// </summary>
-    private void CheckLoseEfficacy()
+    protected virtual void CheckLoseEfficacy()
     {
         if(effectiveRange != float.MaxValue)
         {

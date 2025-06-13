@@ -21,13 +21,19 @@ public class GamingPanel : BasePanel
 
     public override void OnEnter()
     {
-        base.OnEnter();
         //先初始化对应的UI组件(给当前活跃UI添加对应组件)
         gamingPanelUI = activePanel.AddComponent<GamingPanelUI>();
         //初始化对应的面板UI的数据
         gamingPanelData = new GamingPanelData();
+
+        //注册事件
+        MessageManager.Instance.AddFunctionInAction<int>(MessageDefine.ECO_SAPPHIRE_CHANGE, gamingPanelData.NotifySapphire);
+
         //设定data
         gamingPanelUI.SetData(gamingPanelData);
+
+        //执行基类的方法
+        base.OnEnter();
     }
 
     public override void OnPasue()
@@ -43,21 +49,4 @@ public class GamingPanel : BasePanel
         gamingPanelUI.BuildMenuButtonPanel.SetActive(true);
     }
 
-    /// <summary>
-    /// 更改Score的方法
-    /// </summary>
-    /// <param name="value"></param>
-    public void ChangeScoreValue(int value)
-    {
-        gamingPanelData.NotifyScore(value);
-    }
-
-    /// <summary>
-    /// 更改Score的方法
-    /// </summary>
-    /// <param name="value"></param>
-    public void ChangeCoinValue(int value)
-    {
-        gamingPanelData.NotifyCoin(value);
-    }
 }

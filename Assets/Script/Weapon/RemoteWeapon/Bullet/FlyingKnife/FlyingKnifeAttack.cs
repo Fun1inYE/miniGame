@@ -7,16 +7,14 @@ public class FlyingKnifeAttack : WeaponAttack
 {
     protected override void OnTriggerEnter2D(Collider2D other)
     {
+        base.OnTriggerEnter2D(other);
         //识别敌人
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            EnemyHealth enemyHealth = other.gameObject.GetComponent<EnemyHealth>();
-            enemyHealth.Attacked(attack);
-            EnemyMove enemyMove = other.gameObject.GetComponent<EnemyMove>();
-            enemyMove.Back(back);
-
-            //销毁子弹
-            Destroy(gameObject);
+            //获取到飞刀的其他逻辑
+            FlyingKnife flyingKnife = GetComponent<FlyingKnife>();
+            //开启协程
+            StartCoroutine(flyingKnife.DestroyAfterTrailFinished());
         }
     }
 }

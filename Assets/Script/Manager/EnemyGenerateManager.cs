@@ -30,6 +30,15 @@ public class EnemyStruct
 }
 
 /// <summary>
+/// 游戏中状态
+/// </summary>
+public enum GameStateType
+{
+    //正在生成状态  //中场休息状态
+    Generating, Cool
+}
+
+/// <summary>
 /// 敌人生成管理器类
 /// </summary>
 public class EnemyGenerateManager : MonoBehaviour
@@ -47,7 +56,12 @@ public class EnemyGenerateManager : MonoBehaviour
     /// <summary>
     /// 带生成的波次
     /// </summary>
-    private List<WaveData> waveList; 
+    private List<WaveData> waveList;
+
+    /// <summary>
+    /// 关卡奖励的金币
+    /// </summary>
+    private int levelCoin;
 
     /// <summary>
     /// 当前场上的敌人数量
@@ -73,6 +87,9 @@ public class EnemyGenerateManager : MonoBehaviour
     /// </summary>
     private Coroutine generateEnemyCorotine;
 
+    public Timer NextWaveTimer { get => nextWaveTimer; set => nextWaveTimer = value; }
+    public Timer CurrentTimer { get => currentTimer; set => currentTimer = value; }
+
     private void Awake()
     {
         //绑定摄像机参考中心点
@@ -89,20 +106,30 @@ public class EnemyGenerateManager : MonoBehaviour
         currentEnemyStructList = new List<EnemyStruct>();
 
         MessageManager.Instance.AddFunctionInAction<int>(MessageDefine.ENEMY_COUNTDOWN, CurrentEnemyCountDown);
-        MessageManager.Instance.AddFunctionInAction<List<WaveData>>(MessageDefine.GET_WAVE_INFO, GetWaveInfo);
-        MessageManager.Instance.AddFunctionInAction(MessageDefine.GAMESTART, GameStart);
+        MessageManager.Instance.AddFunctionInAction<List<WaveData>, int>(MessageDefine.GET_WAVE_INFO, GetWaveInfo);
+        MessageManager.Instance.AddFunctionInAction(MessageDefine.GAME_START, GameStart);
     }
 
+    /// <summary>
+    /// 游戏开始的方法
+    /// </summary>
     public void GameStart()
     {
-        if(waveList == null)
+        if (waveList == null)
         {
             Debug.LogError("EnemyGenerateManager没有获取到波次列表, 无法开始游戏");
             return;
         }
 
+        //当序号不为-1的话，就重置
+        if (currentWaveIndex != -1)
+        {
+            //重置关卡序号
+            currentWaveIndex = -1;
+        }
+
         //先判断当前波次数是不是 -1
-        if(currentWaveIndex == -1)
+        if (currentWaveIndex == -1)
         {
             Debug.Log("游戏开始！开始冷却时间");
             WaveColdStart();
@@ -121,10 +148,12 @@ public class EnemyGenerateManager : MonoBehaviour
     /// 获取波次的方法
     /// </summary>
     /// <param name="waveDatas"></param>
-    public void GetWaveInfo(List<WaveData> waveDatas)
+    /// <param name="index">关卡编号</param>
+    public void GetWaveInfo(List<WaveData> waveDatas, int coin)
     {
-        Debug.Log("被传递了列表");
+        Debug.Log("敌人生成器被传递关卡了列表");
         waveList = waveDatas;
+        levelCoin = coin;
     }
 
     /// <summary>
@@ -132,20 +161,29 @@ public class EnemyGenerateManager : MonoBehaviour
     /// </summary>
     private void WaveColdStart()
     {
-        currentWaveIndex ++;
-        Debug.Log(waveList.Count);
+        //先清空波次待生成的敌人列表
+        currentEnemyStructList.Clear();
+
+        currentWaveIndex++;
+        Debug.Log("开始波次：" + waveList.Count);
         //先判断是否已经超出了最大波次的索引
-        if(currentWaveIndex > waveList.Count - 1)
+        if (currentWaveIndex > waveList.Count - 1)
         {
             Debug.Log("已经坚持完所有的波次了");
-            //TODO: 游戏完成的逻辑
+            //游戏完成的逻辑
+            //获得这一关的金币
+            EconomyManager.Instance.ChangeCoin(levelCoin);
+            //向总结管理器发出获得金币数量
+            MessageManager.Instance.Send<int>(MessageDefine.ADD_GET_COIN_COUNT, levelCoin);
+            //向SummaryUI发送游戏结束的信息
+            MessageManager.Instance.Send(MessageDefine.GAME_OVER);
             return;
         }
 
         Debug.Log($"进入到了下一个波次的倒计时，时间为：{waveList[currentWaveIndex].nextWaveCold}");
-        if(waveList != null)
+        if (waveList != null)
         {
-            nextWaveTimer.StartCountdownTimer(waveList[currentWaveIndex].nextWaveCold, 0.2f);
+            nextWaveTimer.StartCountdownTimer(waveList[currentWaveIndex].nextWaveCold, 1f);
         }
     }
 
@@ -161,7 +199,7 @@ public class EnemyGenerateManager : MonoBehaviour
 
         Debug.Log($"开始本波次的计时, 本波时间为 {waveList[currentWaveIndex].waveTime}");
         //开始本波次的计时
-        currentTimer.StartExtendTimer(waveList[currentWaveIndex].waveTime, 0.2f);
+        currentTimer.StartExtendTimer(waveList[currentWaveIndex].waveTime, 1f);
         //按照这个波数进行生成敌人
         generateEnemyCorotine = StartCoroutine(GenerateEnemy(waveList[currentWaveIndex].generateFreqency));
     }
@@ -173,6 +211,16 @@ public class EnemyGenerateManager : MonoBehaviour
     {
         //停止生成敌人的协程
         StopCoroutine(generateEnemyCorotine);
+
+        // 波次完成的逻辑
+
+        //获取到player的位置
+        Transform player = FindAndMoveObject.FindFromFirstLayer("Player").transform;
+        //弹出这个波次的奖励箱
+        GameObject chest = TreasureChestFactory.CreateAChest(ChestType.Normal, (Vector2)player.position + new Vector2(0, 8f), waveList[currentWaveIndex].chestData.sapphire);
+        GameObject chestObj = Instantiate(chest, (Vector2)player.position + new Vector2(50f, 50f), Quaternion.identity);
+        TreasureChestManager.Instance.RegisterChest(chestObj);
+
         //开启新的波数冷却计时
         WaveColdStart();
     }
@@ -187,13 +235,13 @@ public class EnemyGenerateManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator GenerateEnemy(float generateFreqency)
     {
-        while(true)
+        while (true)
         {
             //先检测有没有新敌人加入到待生成的列表中
             AddEnemyStructListFromTimer(currentTimer.remainingTime);
 
             //判断currentEnemyStructList中有没有敌人
-            if(currentEnemyStructList.Count != 0)
+            if (currentEnemyStructList.Count != 0)
             {
                 //生成一个随机数(0, 1]
                 float randomNum = Random.Range(0.000001f, 1.000001f);
@@ -201,9 +249,9 @@ public class EnemyGenerateManager : MonoBehaviour
                 Vector2 point = GetRandomCoordinate();
 
                 //判断点是否在屏幕内
-                if(!JudgmentPoint.IsInScreen(point))
+                if (!JudgmentPoint.IsInScreen(point))
                 {
-                    if(currentEnemyCount >= waveList[currentWaveIndex].maxEnemyCount)
+                    if (currentEnemyCount >= waveList[currentWaveIndex].maxEnemyCount)
                     {
                         Debug.Log("敌人数量已经达到当前波数设定最大值");
                     }
@@ -212,9 +260,9 @@ public class EnemyGenerateManager : MonoBehaviour
                         //通过随机值判断应该生成什么敌人
                         GameObject initObj = EnemyFactory.CreateEnemyWithType(GetEnemyTypeWithRange(randomNum));
                         //敌人数量 +1
-                        currentEnemyCount ++;
+                        currentEnemyCount++;
                         //向敌人管理器中添加一个敌人并且生成
-                        EnemyManager.Instance.RegisterEnemy(Instantiate(initObj, point, Quaternion.identity));
+                        EnemyManager.Instance.AddEnemy(Instantiate(initObj, point, Quaternion.identity));
                         Debug.Log("点合法的");
                     }
                 }
@@ -223,9 +271,9 @@ public class EnemyGenerateManager : MonoBehaviour
                     Debug.Log("点不合法");
                 }
             }
-            
+
             // 等待generateFreqency秒
-            yield return new WaitForSeconds(generateFreqency); 
+            yield return new WaitForSeconds(generateFreqency);
         }
     }
 
@@ -236,16 +284,16 @@ public class EnemyGenerateManager : MonoBehaviour
     private void AddEnemyStructListFromTimer(float currentTime)
     {
         //减少遍历，减少性能浪费
-        if(currentEnemyStructList.Count == waveList[currentWaveIndex].enemies.Count)
+        if (currentEnemyStructList.Count == waveList[currentWaveIndex].enemies.Count)
         {
             return;
         }
 
         //遍历当前波次的敌人
-        foreach(EnemyStruct enmey in waveList[currentWaveIndex].enemies)
+        foreach (EnemyStruct enmey in waveList[currentWaveIndex].enemies)
         {
             //如果当前场上时间大于敌人开始生成时间, 并且列表中不包含该敌人
-            if(currentTime >= enmey.startTime && !currentEnemyStructList.Contains(enmey))
+            if (currentTime >= enmey.startTime && !currentEnemyStructList.Contains(enmey))
             {
                 currentEnemyStructList.Add(enmey);
                 CalculateRangeWithWeight();
@@ -258,7 +306,7 @@ public class EnemyGenerateManager : MonoBehaviour
     /// </summary>
     public void CalculateRangeWithWeight()
     {
-        if(currentEnemyStructList.Count == 0)
+        if (currentEnemyStructList.Count == 0)
         {
             Debug.Log("敌人列表中没有敌人");
             return;
@@ -266,13 +314,13 @@ public class EnemyGenerateManager : MonoBehaviour
 
         //计算总权重
         float sum = 0;
-        foreach(var enemyStruct in currentEnemyStructList)
+        foreach (var enemyStruct in currentEnemyStructList)
         {
             sum = sum + enemyStruct.weight;
         }
 
         //判断总权重
-        if(sum == 0)
+        if (sum == 0)
         {
             Debug.Log("敌人列表中的敌人都不需要生成");
             return;
@@ -281,7 +329,7 @@ public class EnemyGenerateManager : MonoBehaviour
         //计算范围
         float start = 0;
         float end = 0;
-        foreach(var enemyStruct in currentEnemyStructList)
+        foreach (var enemyStruct in currentEnemyStructList)
         {
             end = start + enemyStruct.weight / sum;
             enemyStruct.range = new Vector2(start, end);
@@ -307,9 +355,9 @@ public class EnemyGenerateManager : MonoBehaviour
     /// <returns></returns>
     private EnemyType GetEnemyTypeWithRange(float randomNum)
     {
-        foreach(EnemyStruct enemy in currentEnemyStructList)
+        foreach (EnemyStruct enemy in currentEnemyStructList)
         {
-            if(randomNum >= enemy.range.x && randomNum <= enemy.range.y)
+            if (randomNum >= enemy.range.x && randomNum <= enemy.range.y)
             {
                 return enemy.enmeyType;
             }
@@ -338,7 +386,7 @@ public class EnemyGenerateManager : MonoBehaviour
         float y;
 
         //通过随机数判断位置
-        switch(randomDir)
+        switch (randomDir)
         {
             //左上
             case 0:
@@ -369,7 +417,7 @@ public class EnemyGenerateManager : MonoBehaviour
     private void OnDisable()
     {
         MessageManager.Instance.RemoveFunctionInAction<int>(MessageDefine.ENEMY_COUNTDOWN, CurrentEnemyCountDown);
-        MessageManager.Instance.RemoveFunctionInAction<List<WaveData>>(MessageDefine.GET_WAVE_INFO, GetWaveInfo);
-        MessageManager.Instance.RemoveFunctionInAction(MessageDefine.GAMESTART, GameStart);
+        MessageManager.Instance.RemoveFunctionInAction<List<WaveData>, int>(MessageDefine.GET_WAVE_INFO, GetWaveInfo);
+        MessageManager.Instance.RemoveFunctionInAction(MessageDefine.GAME_START, GameStart);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// 计时器工具类（通用计时器）
@@ -29,13 +30,18 @@ public class Timer : MonoBehaviour
     public event TimerFinishedHandler OnTimerFinished;
 
     /// <summary>
+    /// 用于时间更新提醒外部更新的方法
+    /// </summary>
+    public UnityAction<string> TimeUpdateEvent;
+
+    /// <summary>
     /// 启动计时器
     /// </summary>
     /// <param name="time"></param>
     public void StartCountdownTimer(float time, float frequency)
     {
         //如果计时器还在运转的话，就停止计时器
-        if(isRunning)
+        if (isRunning)
         {
             StopCountdownTimer();
         }
@@ -90,10 +96,13 @@ public class Timer : MonoBehaviour
     /// <returns></returns>
     private IEnumerator CountdownCoroutine(float frequency)
     {
-        while(remainingTime > 0)
+        while (remainingTime > 0)
         {
             yield return new WaitForSeconds(frequency);
             remainingTime -= frequency;
+
+            //提醒外部UI更新
+            TimeUpdateEvent?.Invoke(remainingTime.ToString());
         }
 
         isRunning = false;
@@ -106,10 +115,13 @@ public class Timer : MonoBehaviour
     /// <returns></returns>
     private IEnumerator ExtenderCoroutine(float time, float frequency)
     {
-        while(remainingTime < time)
+        while (remainingTime < time)
         {
             yield return new WaitForSeconds(frequency);
             remainingTime += frequency;
+            
+            //提醒外部UI更新
+            TimeUpdateEvent?.Invoke((time - remainingTime).ToString());
         }
         
         isRunning = false;

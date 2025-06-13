@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 /// <summary>
 /// 建筑菜单的UI
@@ -24,7 +25,7 @@ public class BuildMenuPanelUI : MonoBehaviour
     private Button backButton;
 
     /// <summary>
-    /// 建造塔的方法
+    /// 建造塔的按钮
     /// </summary>
     private Button buildTowerButton;
 
@@ -50,10 +51,17 @@ public class BuildMenuPanelUI : MonoBehaviour
     /// </summary>
     private BuildMenuPanelData data;
 
+    /// <summary>
+    /// 等待花费的蓝宝石
+    /// </summary>
+    private int waitSpendSapphire;
+
     private void Awake()
     {
         towerGenrateManager = ComponentFinder.GetOrAddComponent<TowerGenrateManager>(FindAndMoveObject.FindFromFirstLayer("TowerGenrateManager"));
         InitUI();
+        //默认0
+        waitSpendSapphire = 0;
     }
 
     /// <summary>
@@ -70,19 +78,24 @@ public class BuildMenuPanelUI : MonoBehaviour
         backToMenuButton = ComponentFinder.GetChildComponent<Button>(gameObject, "BackToMenuButton");
 
         //按钮绑定监听事件
-        backButton.onClick.AddListener(() => {
+        backButton.onClick.AddListener(() =>
+        {
+            //允许摇杆使用
+            FindAndMoveObject.FindFromFirstLayer("Player").GetComponent<PlayerMove>().joystick.GetComponent<CanvasGroup>().blocksRaycasts = true;
             //弹出当前窗口
             UIManager.Instance.GetPanelManager().Pop();
         });
 
-        buildTowerButton.onClick.AddListener(() => {
+        buildTowerButton.onClick.AddListener(() =>
+        {
             //确定建造塔
             towerGenrateManager.SwitchStateToBuilding();
             //然后返回菜单(花费资源了)
             BackToBuildMenu(true);
         });
 
-        backToMenuButton.onClick.AddListener(() => {
+        backToMenuButton.onClick.AddListener(() =>
+        {
             //取消建设
             towerGenrateManager.CancelBuild();
             //返回菜单(没有花费资源)
@@ -111,7 +124,7 @@ public class BuildMenuPanelUI : MonoBehaviour
         BuildTowerInventoryEditor editor = buildTowerInventoryEditor.GetComponent<BuildTowerInventoryEditor>();
 
         //判断BuildTowerInventoryEditor是否初始化成功
-        if(editor.IsInitInventory == false)
+        if (editor.IsInitInventory == false)
         {
             Debug.LogError("建筑菜单编辑器初始化没成功, 关卡按钮没有正确生成");
             return;
@@ -124,7 +137,7 @@ public class BuildMenuPanelUI : MonoBehaviour
         int towerCount = editor.towerList.Count;
 
         //开始生成塔的按钮
-        for(int i = 0; i < towerCount; i++)
+        for (int i = 0; i < towerCount; i++)
         {
             int index = i;
             GameObject buttonObj = Instantiate(buildTowerButton_Prefab.gameObject, content);
@@ -133,14 +146,28 @@ public class BuildMenuPanelUI : MonoBehaviour
             price.text = editor.towerList[index].price.ToString();
             Image image = FindAndMoveObject.FindChildBreadthFirst(buttonObj.transform, "TowerImage").GetComponent<Image>();
             image.sprite = editor.towerList[index].sprite;
-            
+
             //给按钮绑定对应功能
-            buttonObj.GetComponent<Button>().onClick.AddListener(() => {
-                //设置面板可见性
-                buildMenuPanel.SetActive(false);
-                backToMenuButtonPanel.SetActive(true);
-                //通过towerGenrateManager生成塔
-                towerGenrateManager.SelectATower(editor.towerList[index].towerType);
+            buttonObj.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                //当玩家拥有的蓝宝石大于塔所需要的塔所需要的费用
+                if (EconomyManager.Instance.sapphire >= editor.towerList[index].price)
+                {
+                    //设置面板可见性
+                    buildMenuPanel.SetActive(false);
+                    backToMenuButtonPanel.SetActive(true);
+                    //通过towerGenrateManager生成塔
+                    towerGenrateManager.SelectATower(editor.towerList[index].towerType);
+                    //允许摇杆使用
+                    FindAndMoveObject.FindFromFirstLayer("Player").GetComponent<PlayerMove>().joystick.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                    //记录等待花费的塔费用
+                    waitSpendSapphire = editor.towerList[index].price;
+                }
+                else
+                {
+                    //闪烁文字以提示玩家没有足够的蓝宝石进行建造
+                    DisplayWithDoTween.FlashText(sapphireValue, Color.white, Color.red, 0.1f, 3);
+                }
             });
         }
     }
@@ -155,10 +182,13 @@ public class BuildMenuPanelUI : MonoBehaviour
         buildMenuPanel.SetActive(true);
         backToMenuButtonPanel.SetActive(false);
 
-        //是否是建设中途取消的呢
-        if(isSpend)
+        //不允许摇杆使用
+        FindAndMoveObject.FindFromFirstLayer("Player").GetComponent<PlayerMove>().joystick.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+        //是否花费了费用用于建造塔
+        if (isSpend)
         {
-            //TODO:扣除资源的逻辑
+            EconomyManager.Instance.ChangeSapphire(-waitSpendSapphire);
         }
     }
 
@@ -182,5 +212,13 @@ public class BuildMenuPanelUI : MonoBehaviour
     private void UpdateUI()
     {
         sapphireValue.text = data.Sapphire.ToString();
+    }
+
+    private void OnDisable()
+    {
+        data.OnDataChange -= UpdateUI;
+        backButton.onClick.RemoveAllListeners();
+        buildTowerButton.onClick.RemoveAllListeners();
+        backToMenuButton.onClick.RemoveAllListeners();
     }
 }

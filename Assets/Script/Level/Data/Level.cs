@@ -12,6 +12,11 @@ public class LevelData
     /// </summary>
     private int levelIndex;
 
+    /// <summary>
+    /// 本关能获取到的金币
+    /// </summary>
+    public int coin;
+
     public List<WaveData> waves;
 
     /// <summary>

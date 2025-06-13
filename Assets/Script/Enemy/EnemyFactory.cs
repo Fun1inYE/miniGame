@@ -93,7 +93,7 @@ public static class EnemyFactory
         string prefabPath = "Prefab/Enemy/RemoteSlime";
         GameObject go = Resources.Load<GameObject>(prefabPath);
         //创建数据
-        RemoteSlimeData data = new RemoteSlimeData("RemoteSlime", 10f, 10, 2, 10, 30f, 5f, 5, float.MaxValue, 1080f);
+        RemoteSlimeData data = new RemoteSlimeData("RemoteSlime", 10f, 10, 2, 10, 30f, 5f, 5, 200f, 1080f);
         //远程史莱姆的其他逻辑
         RemoteSlime remoteSlime = ComponentFinder.GetOrAddComponent<RemoteSlime>(go);
         remoteSlime.enemyType = EnemyType.RemoteSlime;

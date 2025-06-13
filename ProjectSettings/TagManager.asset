@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Enemy
   - Tower
+  - Chest
+  - Bullet
+  - Ground
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -45,6 +49,12 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 4057843031
+    locked: 0
+  - name: OnGround
+    uniqueID: 2546806723
+    locked: 0
+  - name: Air
+    uniqueID: 842178957
     locked: 0
   - name: Gaming
     uniqueID: 4240373885

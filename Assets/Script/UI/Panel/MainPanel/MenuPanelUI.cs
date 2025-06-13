@@ -35,7 +35,7 @@ public class MenuPanelUI : MonoBehaviour
         readyPanelButton = ComponentFinder.GetChildComponent<Button>(gameObject, "ReadyPanelButton");
         propertyPanelButton = ComponentFinder.GetChildComponent<Button>(gameObject, "PropertyPanelButton");
         optionPanelButton = ComponentFinder.GetChildComponent<Button>(gameObject, "OptionPanelButton");
-        
+
         SetPanelButtonFunction();
     }
 
@@ -45,15 +45,15 @@ public class MenuPanelUI : MonoBehaviour
     /// <param name="action"></param>
     public void SetPanelButtonFunction()
     {
-        readyPanelButton.onClick.AddListener(() => 
+        readyPanelButton.onClick.AddListener(() =>
         {
             OnSwitchPanel?.Invoke(MainPanelType.MainMenu);
         });
-        propertyPanelButton.onClick.AddListener(() => 
+        propertyPanelButton.onClick.AddListener(() =>
         {
             OnSwitchPanel?.Invoke(MainPanelType.PropertyPanel);
         });
-        optionPanelButton.onClick.AddListener(() => 
+        optionPanelButton.onClick.AddListener(() =>
         {
             OnSwitchPanel?.Invoke(MainPanelType.OptionPanel);
         });

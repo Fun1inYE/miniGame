@@ -18,11 +18,16 @@ public class EnemyManager : Singleton<EnemyManager>
         base.Awake();
     }
 
+    private void Start()
+    {
+        MessageManager.Instance.AddFunctionInAction(MessageDefine.BACK_TO_MAINMENU, RemoveAndDestroyAllEnemy);
+    }
+
     /// <summary>
     /// 添加一个敌人的方法
     /// </summary>
     /// <param name="enemy"></param>
-    public void RegisterEnemy(GameObject enemy)
+    public void AddEnemy(GameObject enemy)
     {
         enemyList.Add(enemy);
     }
@@ -31,11 +36,24 @@ public class EnemyManager : Singleton<EnemyManager>
     /// 消除一个敌人的方法
     /// </summary>
     /// <param name="enemy"></param>
-    public void UnregisterEnemy(GameObject enemy)
+    public void RemoveEnemy(GameObject enemy)
     {
         enemyList.Remove(enemy);
     }
-    
+
+    /// <summary>
+    /// 清除所有敌人
+    /// </summary>
+    public void RemoveAndDestroyAllEnemy()
+    {
+        foreach (var go in enemyList)
+        {
+            Destroy(go);
+        }
+
+        enemyList.Clear();
+    }
+
     /// <summary>
     /// 寻找距离position最近的敌人
     /// </summary>
@@ -48,7 +66,7 @@ public class EnemyManager : Singleton<EnemyManager>
         float minDistance = Mathf.Infinity;
 
         //如果范围为无穷大，则查找屏幕内的所有敌人
-        if(range == float.MaxValue)
+        if (range == float.MaxValue)
         {
             foreach (GameObject enemy in enemyList)
             {
@@ -80,5 +98,10 @@ public class EnemyManager : Singleton<EnemyManager>
         }
 
         return nearestEnemy;
+    }
+
+    private void OnDisable()
+    {
+        MessageManager.Instance.RemoveFunctionInAction(MessageDefine.BACK_TO_MAINMENU, RemoveAndDestroyAllEnemy);
     }
 }

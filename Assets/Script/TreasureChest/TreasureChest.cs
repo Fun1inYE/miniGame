@@ -7,8 +7,5 @@ using UnityEngine;
 /// </summary>
 public class TreasureChest : MonoBehaviour
 {
-    /// <summary>
-    /// 蓝宝石的数量(默认为0)
-    /// </summary>
-    public int sapphire = 0;
+    
 }

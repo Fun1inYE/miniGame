@@ -7,5 +7,11 @@ using UnityEngine;
 /// </summary>
 public class OptionPanelUI : MonoBehaviour
 {
-   
+    /// <summary>
+    /// 关闭UI要执行的方法
+    /// </summary>
+    public void CloseUI()
+    {
+
+    }
 }

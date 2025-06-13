@@ -28,6 +28,11 @@ public class WaveData
     public int nextWaveCold;
 
     /// <summary>
+    /// 此波次的宝箱信息
+    /// </summary>
+    public ChestData chestData;
+
+    /// <summary>
     /// 波次中的敌人结构
     /// </summary>
     public List<EnemyStruct> enemies;

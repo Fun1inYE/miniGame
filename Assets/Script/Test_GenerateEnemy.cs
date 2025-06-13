@@ -6,6 +6,6 @@ public class Test_GenerateEnemy : MonoBehaviour
 {
     public void Start()
     {
-        MessageManager.Instance.Send(MessageDefine.GAMESTART);
+        MessageManager.Instance.Send(MessageDefine.GAME_START);
     }
 }

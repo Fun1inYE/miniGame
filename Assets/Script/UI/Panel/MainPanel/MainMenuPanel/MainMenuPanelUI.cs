@@ -16,7 +16,7 @@ public class MainMenuPanelUI : MonoBehaviour
     /// <summary>
     /// 蓝宝石的数量
     /// </summary>
-    private Text sapphireValue;
+    private Text coinValue;
 
     private MainMenuPanelData data;
 
@@ -31,13 +31,13 @@ public class MainMenuPanelUI : MonoBehaviour
     private void InitUI()
     {
         startGameButton = ComponentFinder.GetChildComponent<Button>(gameObject, "StartButton");
-        startGameButton.onClick.AddListener(() => 
+        startGameButton.onClick.AddListener(() =>
         {
             //压入LevelPanel
             UIManager.Instance.GetPanelManager().Push(new LevelPanel());
         });
 
-        sapphireValue = ComponentFinder.GetChildComponent<Text>(gameObject, "SapphireValue");
+        coinValue = ComponentFinder.GetChildComponent<Text>(gameObject, "CoinValue");
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class MainMenuPanelUI : MonoBehaviour
     /// <param name="data"></param>
     public void SetData(MainMenuPanelData data)
     {
-        //对playerData进行赋值
+        //对Data进行赋值
         this.data = data;
         //初始化或更新PlayerUI
         UpdateUI();
@@ -59,10 +59,13 @@ public class MainMenuPanelUI : MonoBehaviour
     /// </summary>
     private void UpdateUI()
     {
-        sapphireValue.text = data.Sapphire.ToString();
+        coinValue.text = data.Coin.ToString();
     }
 
-    private void OnDisable()
+    /// <summary>
+    /// 关闭UI的方法
+    /// </summary>
+    public void CloseUI()
     {
         this.data.OnDataChange -= UpdateUI;
     }

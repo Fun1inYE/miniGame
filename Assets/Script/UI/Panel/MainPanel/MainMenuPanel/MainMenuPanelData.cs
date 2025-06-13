@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 /// <summary>
 /// MainMenuPanel中的数据类
@@ -6,11 +7,11 @@ using System;
 public class MainMenuPanelData
 {
     /// <summary>
-    /// 蓝宝石的数量
+    /// 金币的数量
     /// </summary>
-    private int sapphire;
+    private int coin;
 
-    public int Sapphire { get => sapphire; set => sapphire = value; }
+    public int Coin { get => coin; set => coin = value; }
 
     /// <summary>
     /// 数据更改的委托
@@ -22,12 +23,12 @@ public class MainMenuPanelData
     /// </summary>
     public MainMenuPanelData()
     {
-        sapphire = 0;
+        coin = 0;
     }
 
-    public void NotifySapphire(int value)
+    public void NotifyCoin(int value)
     {
-        this.sapphire += value;
+        coin = value;
         OnDataChange?.Invoke();
     }
 }

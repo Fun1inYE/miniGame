@@ -45,27 +45,27 @@ public static class SaveWithPlayerPref
     /// <param name="key">对应的键</param>
     /// <param name="defaultValue">默认值</param>
     /// <returns>返回读取出来的值</returns>
-    public static T LoadByPlayerPrefs<T>(string key, object defaultValue = default) where T : struct
+    public static T LoadByPlayerPrefs<T>(string key)
     {
         //检查存不存在这个键
         if(!PlayerPrefs.HasKey(key))
         {
-            Debug.LogError($"不存在 {key} 的键");
+            Debug.LogWarning($"不存在 {key} 的键");
             return default;
         }
 
         //以下检查T为什么类型
         if(typeof(T) == typeof(int))
         {
-            return (T)(object)PlayerPrefs.GetInt(key, (int)defaultValue);
+            return (T)(object)PlayerPrefs.GetInt(key);
         }
         else if(typeof(T) == typeof(float))
         {
-            return (T)(object)PlayerPrefs.GetFloat(key, (float)defaultValue);
+            return (T)(object)PlayerPrefs.GetFloat(key);
         }
         else if(typeof(T) == typeof(string))
         {
-            return (T)(object)PlayerPrefs.GetString(key, (string)defaultValue);
+            return (T)(object)PlayerPrefs.GetString(key);
         }
         else
         {

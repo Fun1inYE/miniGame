@@ -25,7 +25,10 @@ public class WeaponAttack : MonoBehaviour
         if(other.CompareTag("Enemy"))
         {
             EnemyHealth enemyHealth = other.gameObject.GetComponent<EnemyHealth>();
-            enemyHealth.Attacked(attack);
+            //计算伤害
+            enemyHealth.Attacked(attack + BuffManager.Instance.buffData.AttackLevel * PlayerBuffDataMultiplier.multi_Attack);
+            //向总结管理其发送造成伤害统计
+            MessageManager.Instance.Send<int>(MessageDefine.ADD_TOTAL_ATTACK, attack + BuffManager.Instance.buffData.AttackLevel * PlayerBuffDataMultiplier.multi_Attack);
             EnemyMove enemyMove = other.gameObject.GetComponent<EnemyMove>();
             enemyMove.Back(back);
         }

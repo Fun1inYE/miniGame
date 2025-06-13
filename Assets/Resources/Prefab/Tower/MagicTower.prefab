@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: -7688809255714502104}
   - component: {fileID: -4079865543509259082}
   - component: {fileID: 613095650145670182}
+  - component: {fileID: 7227716887230760015}
   m_Layer: 0
   m_Name: MagicTower
   m_TagString: Tower
@@ -108,15 +109,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -237124265
-  m_SortingLayer: 1
+  m_SortingLayerID: -1748160573
+  m_SortingLayer: 2
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 2bea61cd258a4574191d8fe54b4f54cc, type: 3}
+  m_Sprite: {fileID: 939246752, guid: 2bea61cd258a4574191d8fe54b4f54cc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.32, y: 0.64}
+  m_Size: {x: 26, y: 49}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -137,10 +138,10 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -16}
   m_SpriteTilingProperty:
-    border: {x: 3, y: 8, z: 3, w: 7}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 32, y: 64}
-    newSize: {x: 0.32, y: 0.64}
+    oldSize: {x: 26, y: 49}
+    newSize: {x: 26, y: 49}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -160,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9395ad31ce5383b4aa06f5f9a90cbc5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerType: 0
+  towerType: 1
   canbuild: 1
   built: 0
 --- !u!114 &-4079865543509259082
@@ -175,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c463ffe600e8b4dbbcacc5620d4e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 100
+  range: 350
   frequency: 2
   bulletPrefab: {fileID: 2523930156991395105, guid: a492634c10119be4c9fd23a726098c24, type: 3}
 --- !u!50 &613095650145670182
@@ -199,6 +200,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7227716887230760015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895068444706928132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aed4f2f8df569e41ae522081edae0ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1895068445238713781
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +314,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -54593411
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
